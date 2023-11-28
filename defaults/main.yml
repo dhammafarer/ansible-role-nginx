@@ -1,0 +1,9 @@
+---
+nginx_user: "{{ ansible_user }}"
+
+nginx_image_name: "docker.io/library/nginx"
+nginx_image_tag: "latest"
+
+nginx_conf_path: /srv/nginx/conf.d
+nginx_certs_path: /srv/nginx/certs
+nginx_tmp_path: /srv/nginx/tmp

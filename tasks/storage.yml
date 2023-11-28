@@ -1,0 +1,13 @@
+---
+- name: Ensure nginx volume directories exist with correct ownership.
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  loop:
+    - { path: "{{ nginx_conf_path }}", mode: "0755" }
+    - { path: "{{ nginx_certs_path }}", mode: "0755" }
+    - { path: "{{ nginx_tmp_path }}", mode: "0755" }

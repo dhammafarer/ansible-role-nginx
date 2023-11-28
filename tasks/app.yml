@@ -1,0 +1,46 @@
+---
+- name: Ensure a pod exists for nginx.
+  containers.podman.podman_pod:
+    name: nginx
+    state: created
+    recreate: true
+    publish:
+      - 80:80
+      - 443:443
+
+- name: Ensure nginx container exists.
+  containers.podman.podman_container:
+    pod: nginx
+    name: nginx-container
+    image: "{{ nginx_image_name }}:{{ nginx_image_tag }}"
+    state: created
+    detach: true
+    restart_policy: "always"
+    recreate: true
+    volumes:
+      - "{{ nginx_conf_path }}:/etc/nginx/conf.d:Z"
+      - "{{ nginx_certs_path }}:/etc/certs:ro"
+      - "{{ nginx_tmp_path }}:/var/www/tmp:ro"
+
+- name: Install default template.
+  ansible.builtin.template:
+    src: templates/default.conf.j2
+    dest: "{{ nginx_conf_path }}/default.conf"
+    force: true
+    mode: "0644"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Generate systemd units for nginx.
+  containers.podman.podman_generate_systemd:
+    name: nginx
+    dest: "/home/{{ nginx_user }}/.config/systemd/user/"
+    restart_policy: "always"
+
+- name: Ensure systemd units are started and enabled for nginx.
+  ansible.builtin.systemd:
+    scope: user
+    daemon_reload: true
+    name: pod-nginx
+    enabled: true
+    state: restarted

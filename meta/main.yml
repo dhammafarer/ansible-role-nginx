@@ -1,0 +1,19 @@
+---
+dependencies: []
+
+collections:
+  - containers.podman
+
+galaxy_info:
+  role_name: nginx
+  author: palekiwi
+  description: Install nginx in a rootless podman container.
+  license: "license (BSD, MIT)"
+  min_ansible_version: "2.10"
+  platforms:
+    - name: EL
+      versions:
+        - "9"
+  galaxy_tags:
+    - nginx
+    - podman

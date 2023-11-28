@@ -1,0 +1,13 @@
+---
+- name: Import security tasks.
+  ansible.builtin.import_tasks: security.yml
+
+- name: Import storage tasks.
+  ansible.builtin.import_tasks: storage.yml
+
+- name: Run tasks under user {{ nginx_user }}.
+  become: true
+  become_user: "{{ nginx_user }}"
+  block:
+    - name: Import app container tasks.
+      ansible.builtin.import_tasks: app.yml
