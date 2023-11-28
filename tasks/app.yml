@@ -18,8 +18,8 @@
     recreate: true
     volumes:
       - "{{ nginx_conf_path }}:/etc/nginx/conf.d:Z"
-      - "{{ nginx_certs_path }}:/etc/certs:ro"
-      - "{{ nginx_tmp_path }}:/var/www/tmp:ro"
+      - "{{ nginx_certs_path }}:/etc/certs:z"
+      - "{{ nginx_tmp_path }}:/var/www/tmp:z"
 
 - name: Ensure default template is installed.
   ansible.builtin.template:
