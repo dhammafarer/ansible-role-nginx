@@ -14,15 +14,14 @@
     name: nginx-container
     image: "{{ nginx_image_name }}:{{ nginx_image_tag }}"
     state: created
-    detach: true
-    restart_policy: "always"
+    restart_policy: always
     recreate: true
     volumes:
       - "{{ nginx_conf_path }}:/etc/nginx/conf.d:Z"
       - "{{ nginx_certs_path }}:/etc/certs:ro"
       - "{{ nginx_tmp_path }}:/var/www/tmp:ro"
 
-- name: Install default template.
+- name: Ensure default template is installed.
   ansible.builtin.template:
     src: templates/default.conf.j2
     dest: "{{ nginx_conf_path }}/default.conf"
