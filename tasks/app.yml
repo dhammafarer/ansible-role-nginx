@@ -18,13 +18,23 @@
     recreate: true
     volumes:
       - "{{ nginx_conf_path }}:/etc/nginx/conf.d:Z"
-      - "{{ nginx_certs_path }}:/etc/certs:z"
-      - "{{ nginx_tmp_path }}:/var/www/tmp:z"
+      - "{{ nginx_html_path }}:/usr/share/nginx/html:Z"
+      - "{{ nginx_tmp_path }}:/var/www/tmp:z,ro"
+      - "{{ nginx_certs_path }}:/etc/certs:z,ro"
 
 - name: Ensure default template is installed.
   ansible.builtin.template:
     src: templates/default.conf.j2
     dest: "{{ nginx_conf_path }}/default.conf"
+    force: true
+    mode: "0644"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
+
+- name: Ensure default index.html is installed.
+  ansible.builtin.template:
+    src: templates/index.html.j2
+    dest: "{{ nginx_html_path }}/index.html"
     force: true
     mode: "0644"
     owner: "{{ nginx_user }}"

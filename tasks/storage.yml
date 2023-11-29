@@ -9,5 +9,5 @@
     state: directory
   loop:
     - { path: "{{ nginx_conf_path }}", mode: "0755" }
-    - { path: "{{ nginx_certs_path }}", mode: "0755" }
+    - { path: "{{ nginx_html_path }}", mode: "0755" }
     - { path: "{{ nginx_tmp_path }}", mode: "0755" }

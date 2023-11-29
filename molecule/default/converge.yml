@@ -2,16 +2,15 @@
 - name: Converge
   hosts: all
 
+  vars_files:
+    - vars/main.yml
+
   tasks:
+    - name: Remove nginx pod.
+      containers.podman.podman_pod:
+        name: nginx
+        state: absent
+
     - name: "Include palekiwi.nginx"
       ansible.builtin.include_role:
         name: "palekiwi.nginx"
-
-    - name: Copy test template.
-      ansible.builtin.copy:
-        src: files/default.conf
-        dest: /srv/nginx/conf.d
-        force: true
-        mode: "0644"
-        owner: vagrant
-        group: vagrant
